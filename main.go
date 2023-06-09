@@ -17,8 +17,12 @@ func parseStdin() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		msString := strings.TrimSpace(scanner.Text())
+		if msString == "" {
+			continue
+		}
+
 		if len(msString) < 10 {
-			fmt.Println("Invalid timestamp. Must be at least 13 digits long.")
+			fmt.Println("Invalid timestamp. Must be at least 10 digits long.")
 			os.Exit(1)
 		}
 
@@ -42,7 +46,7 @@ func parseStdin() {
 			// nanoseconds
 			fmt.Println(time.Unix(0, int64(ms)).Format(dateFormat))
 		default:
-			fmt.Printf("Invalid timestamp: %d. Must be 13, 16, or 19 digits long.\n", ms)
+			fmt.Printf("Invalid timestamp: %d. Must be 10, 13, 16, or 19 digits long.\n", ms)
 		}
 	}
 }
@@ -57,13 +61,14 @@ func main() {
 		}
 	} else if os.Args[1] == "-s" {
 		parseStdin()
+		return
 	} else {
 		input = os.Args[1]
 	}
 
 	msString := strings.TrimSpace(input)
 	if len(msString) < 10 {
-		fmt.Printf("Invalid timestamp: %s. Must be at least 13 digits long.\n", msString)
+		fmt.Printf("Invalid timestamp: %s. Must be at least 10 digits long.\n", msString)
 		os.Exit(1)
 	}
 
