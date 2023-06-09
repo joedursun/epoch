@@ -17,7 +17,7 @@ func parseStdin() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		msString := strings.TrimSpace(scanner.Text())
-		if len(msString) < 13 {
+		if len(msString) < 10 {
 			fmt.Println("Invalid timestamp. Must be at least 13 digits long.")
 			os.Exit(1)
 		}
@@ -29,6 +29,9 @@ func parseStdin() {
 		}
 
 		switch len(msString) {
+		case 10:
+			// seconds
+			fmt.Println(time.Unix(int64(ms), 0).Format(dateFormat))
 		case 13:
 			// milliseconds
 			fmt.Println(time.Unix(0, int64(ms)*1_000_000).Format(dateFormat))
@@ -39,7 +42,7 @@ func parseStdin() {
 			// nanoseconds
 			fmt.Println(time.Unix(0, int64(ms)).Format(dateFormat))
 		default:
-      fmt.Printf("Invalid timestamp: %d. Must be 13, 16, or 19 digits long.\n", ms)
+			fmt.Printf("Invalid timestamp: %d. Must be 13, 16, or 19 digits long.\n", ms)
 		}
 	}
 }
@@ -59,8 +62,8 @@ func main() {
 	}
 
 	msString := strings.TrimSpace(input)
-	if len(msString) < 13 {
-    fmt.Printf("Invalid timestamp: %s. Must be at least 13 digits long.\n", msString)
+	if len(msString) < 10 {
+		fmt.Printf("Invalid timestamp: %s. Must be at least 13 digits long.\n", msString)
 		os.Exit(1)
 	}
 
@@ -71,6 +74,9 @@ func main() {
 	}
 
 	switch len(msString) {
+	case 10:
+		// seconds
+		fmt.Println(time.Unix(int64(ms), 0).Format(dateFormat))
 	case 13:
 		// milliseconds
 		fmt.Println(time.Unix(0, int64(ms)*1_000_000).Format(dateFormat))
